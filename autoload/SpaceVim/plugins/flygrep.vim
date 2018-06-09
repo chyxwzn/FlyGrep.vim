@@ -63,7 +63,7 @@ function! s:get_search_cmd(expr) abort
   elseif !empty(s:grep_files) && type(s:grep_files) == 1
     return cmd + [a:expr] + [s:grep_files]
   elseif !empty(s:grep_dir)
-    return cmd + [a:expr] + [s:grep_dir]
+    return cmd + [a:expr] + split(s:grep_dir)
   else
     return cmd + [a:expr] + s:grep_ropt
   endif
@@ -432,7 +432,7 @@ function! SpaceVim#plugins#flygrep#open(agrv) abort
     let s:grep_files = ''
   endif
   let dir = expand(get(a:agrv, 'dir', ''))
-  if !empty(dir) && isdirectory(dir)
+  if !empty(dir)
     let s:grep_dir = dir
   else
     let s:grep_dir = ''

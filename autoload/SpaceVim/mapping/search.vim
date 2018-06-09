@@ -72,6 +72,9 @@ function! SpaceVim#mapping#search#grep(key, scope)
   let cmd = s:search_tools[a:key]['command']
   let opt = s:search_tools[a:key]['default_opts']
   let ropt = s:search_tools[a:key]['recursive_opt']
+  if !exists('g:projectDirs')
+    let g:projectDirs=''
+  endif
   if a:scope ==# 'b'
     call SpaceVim#plugins#flygrep#open({
           \ 'input' : input('grep pattern:'),
@@ -91,6 +94,7 @@ function! SpaceVim#mapping#search#grep(key, scope)
   elseif a:scope ==# 'p'
     call SpaceVim#plugins#flygrep#open({
           \ 'input' : input('grep pattern:'),
+          \ 'dir' : g:projectDirs,
           \ 'cmd' : cmd,
           \ 'opt' : opt,
           \ 'ropt' : ropt,
@@ -98,6 +102,31 @@ function! SpaceVim#mapping#search#grep(key, scope)
   elseif a:scope ==# 'P'
     call SpaceVim#plugins#flygrep#open({
           \ 'input' : expand('<cword>'),
+          \ 'dir' : g:projectDirs,
+          \ 'cmd' : cmd,
+          \ 'opt' : opt,
+          \ 'ropt' : ropt,
+          \ })
+  elseif a:scope ==# 'v'
+    let s:saved_reg = @"
+    execute "normal! vgvy"
+    let s:pattern = escape(@", '\\/.*$^~[]')
+    let s:pattern = substitute(s:pattern, "\n$", "", "")
+    call SpaceVim#plugins#flygrep#open({
+          \ 'input' : s:pattern,
+          \ 'files':'@buffers',
+          \ 'cmd' : cmd,
+          \ 'opt' : opt,
+          \ 'ropt' : ropt,
+          \ })
+  elseif a:scope ==# 'V'
+    let s:saved_reg = @"
+    execute "normal! vgvy"
+    let s:pattern = escape(@", '\\/.*$^~[]')
+    let s:pattern = substitute(s:pattern, "\n$", "", "")
+    call SpaceVim#plugins#flygrep#open({
+          \ 'input' : s:pattern,
+          \ 'dir' : g:projectDirs,
           \ 'cmd' : cmd,
           \ 'opt' : opt,
           \ 'ropt' : ropt,

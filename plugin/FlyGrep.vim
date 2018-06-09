@@ -27,10 +27,25 @@ let g:FlyGrep_input_delay = 500
 
 ""
 " A list of searching tools will be userd.
-let g:FlyGrep_search_tools = ['ag', 'rg', 'grep', 'pt', 'ack']
+let g:FlyGrep_search_tools = ['rg', 'ag', 'grep', 'pt', 'ack']
 
 ""
 " Enable FlyGrep statusline
 let g:FlyGrep_enable_statusline = 1
 
 command! -nargs=0 FlyGrep call FlyGrep#open({})
+
+" search in project directories
+command! -nargs=0 FlyGrepIn call SpaceVim#mapping#search#grep('r', 'p')
+
+"search current word in listed buffers
+command! -nargs=0 FlyGrepBIn call SpaceVim#mapping#search#grep('r', 'B')
+
+"search current word in project directories
+command! -nargs=0 FlyGrepCIn call SpaceVim#mapping#search#grep('r', 'P')
+
+"search visual selected word in listed buffers
+command! -range=% FlyGrepvIn call SpaceVim#mapping#search#grep('r', 'v')
+
+"search visual selected word in project directories
+command! -range=% FlyGrepVIn call SpaceVim#mapping#search#grep('r', 'V')
